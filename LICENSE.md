@@ -1,9 +1,9 @@
 <!---
 <meta>
    <source>@pssbletrngle/github-meta-generator</source>
-   <version>1.0.123</version>
-   <timestamp>2026-09-28T15:41:01.222Z</timestamp>
-   <hash>a3a73f185e3b05e8</hash>
+   <version>1.0.124</version>
+   <timestamp>2026-10-16T13:33:40.508Z</timestamp>
+   <hash>9460b6b1494d5fa9</hash>
 </meta>
 -->
 
@@ -13,7 +13,7 @@
 
 All Rights Reserved
 
-Copyright (c) 2026 PssbleTrngle
+Copyright (c) 2026 TeamGalena
 
 This license applies to any files under the following directories:
 
@@ -27,7 +27,7 @@ All other files are licensed under the MIT License:
 
 MIT License
 
-Copyright (c) 2026 PssbleTrngle
+Copyright (c) 2026 TeamGalena
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
