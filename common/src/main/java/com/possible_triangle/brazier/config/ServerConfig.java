@@ -7,7 +7,7 @@ public class ServerConfig implements IServerConfig {
     private final ModConfigSpec.BooleanValue jungleLoot, spawnCrazed;
     private final ModConfigSpec.DoubleValue crazedChance;
     private final ModConfigSpec.IntValue maxHeight, rangePerLevel, baseRange;
-    private final ModConfigSpec.BooleanValue protectAbove, enableSpawnPowder, enableDecoration;
+    private final ModConfigSpec.BooleanValue protectAbove, enableDecoration;
     private final ModConfigSpec.EnumValue<DistanceHandler.Type> distanceCalculator;
 
     public ServerConfig(ModConfigSpec.Builder builder) {
@@ -29,7 +29,6 @@ public class ServerConfig implements IServerConfig {
         builder.pop();
         builder.push("content");
 
-        enableSpawnPowder = builder.define("enableSpawnPowder", true);
         enableDecoration = builder.define("enableDecoration", true);
     }
 
@@ -72,13 +71,6 @@ public class ServerConfig implements IServerConfig {
     public DistanceHandler.Type distanceCalculator() {
         return distanceCalculator.get();
     }
-
-
-    @Override
-    public boolean enableSpawnPowder() {
-        return enableDecoration.get();
-    }
-
 
     @Override
     public boolean enableDecoration() {

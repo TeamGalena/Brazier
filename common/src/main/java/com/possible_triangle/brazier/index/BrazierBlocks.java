@@ -3,36 +3,25 @@ package com.possible_triangle.brazier.index;
 import static com.possible_triangle.brazier.index.BrazierContent.REGISTRATE;
 import static com.tterrag.registrate.providers.RegistrateRecipeProvider.has;
 
-import com.possible_triangle.brazier.BrazierConstants;
-import com.possible_triangle.brazier.platform.Services;
-import com.possible_triangle.brazier.world.block.BrazierBlock;
-import com.possible_triangle.brazier.world.block.LazyTorchBlock;
-import com.possible_triangle.brazier.world.block.LazyWallTorchBlock;
-import com.possible_triangle.brazier.world.block.SpawnPowder;
+import com.possible_triangle.brazier.platform.Datagen;
+import com.possible_triangle.brazier.platform.services.IDatagen;
+import com.possible_triangle.brazier.world.block.*;
 import com.possible_triangle.brazier.world.block.tile.BrazierBlockEntity;
 import com.possible_triangle.brazier.world.block.tile.render.BrazierRenderer;
-import com.tterrag.registrate.providers.ProviderType;
 import com.tterrag.registrate.util.entry.BlockEntityEntry;
 import com.tterrag.registrate.util.entry.BlockEntry;
-import com.tterrag.registrate.util.nullness.NonNullBiConsumer;
 import java.util.function.Supplier;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.core.Direction;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
-import net.minecraft.data.recipes.ShapelessRecipeBuilder;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.item.CreativeModeTabs;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.StandingAndWallBlockItem;
-import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.LanternBlock;
-import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.material.MapColor;
 import org.jetbrains.annotations.Nullable;
 
 public class BrazierBlocks {
@@ -46,7 +35,7 @@ public class BrazierBlocks {
                     .lightLevel(s -> s.getValue(BlockStateProperties.LIT) ? 15 : 0)
             )
             .addLayer(() -> RenderType::cutout)
-            .blockstate(Services.DATAGEN::brazierBlockState)
+            .blockstate(Datagen.consume(IDatagen::brazierBlockState))
             .tag(BlockTags.MINEABLE_WITH_PICKAXE)
             .item()
             .tab(CreativeModeTabs.FUNCTIONAL_BLOCKS)
@@ -69,82 +58,20 @@ public class BrazierBlocks {
             .renderer(() -> $ -> new BrazierRenderer())
             .register();
 
-    public static final BlockEntry<LazyWallTorchBlock> LIVING_TORCH_BLOCK_WALL = REGISTRATE.object("living_wall_torch")
-            .block(props -> new LazyWallTorchBlock(props, BrazierContent.FLAME_PARTICLE))
-            .initialProperties(() -> Blocks.WALL_TORCH)
-            .addLayer(() -> RenderType::cutout)
-            .setData(ProviderType.LANG, NonNullBiConsumer.noop())
-            .blockstate(Services.DATAGEN::wallTorchBlockstate)
+    public static final BlockEntry<? extends Block> WHITE_PUMPKIN = REGISTRATE.object("white_pumpkin")
+            .block(Block::new)
+            .initialProperties(() -> Blocks.PUMPKIN)
+            .properties(it -> it.mapColor(MapColor.TERRACOTTA_WHITE))
+            .blockstate(Datagen.consume(IDatagen::pumpkin))
+            .simpleItem()
             .register();
 
-    public static final BlockEntry<LazyTorchBlock> LIVING_TORCH = REGISTRATE.object("living_torch")
-            .block(props -> new LazyTorchBlock(props, BrazierContent.FLAME_PARTICLE))
-            .initialProperties(() -> Blocks.TORCH)
-            .addLayer(() -> RenderType::cutout)
-            .blockstate(Services.DATAGEN::torchBlockState)
-            .tag(BlockTags.MINEABLE_WITH_PICKAXE)
-            .item((block, props) -> new StandingAndWallBlockItem(block, LIVING_TORCH_BLOCK_WALL.get(), props, Direction.DOWN))
-            .transform(BrazierContent.conditionalTab(CreativeModeTabs.FUNCTIONAL_BLOCKS, Services.CONFIGS.server()::enableDecoration))
-            .model((context, provider) -> provider.blockSprite(context))
-            .recipe(Services.DATAGEN::livingTorch)
-            .tag(BrazierTags.RANGE_INDICATOR)
-            .build()
-            .register();
-
-    public static final BlockEntry<LanternBlock> LIVING_LANTERN = REGISTRATE.object("living_lantern")
-            .block(LanternBlock::new)
-            .initialProperties(() -> Blocks.LANTERN)
-            .addLayer(() -> RenderType::cutout)
-            .blockstate(Services.DATAGEN::lanternBlockstate)
-            .item()
-            .transform(BrazierContent.conditionalTab(CreativeModeTabs.FUNCTIONAL_BLOCKS, Services.CONFIGS.server()::enableDecoration))
-            .model((context, provider) -> provider.generated(context))
-            .recipe((context, provider) ->
-                    ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, context.get())
-                            .pattern("xxx")
-                            .pattern("xtx")
-                            .pattern("xxx")
-                            .define('x', Items.IRON_NUGGET)
-                            .define('t', LIVING_TORCH)
-                            .unlockedBy("has_living_torch", has(LIVING_TORCH))
-                            .save(provider)
-            )
-            .tag(BrazierTags.RANGE_INDICATOR)
-            .build()
-            .register();
-
-    public static final BlockEntry<SpawnPowder> SPAWN_POWDER = REGISTRATE.object("spawn_powder")
-            .block(SpawnPowder::new)
-            .lang("Cursed Ash")
-            .properties(it -> it
-                    .noCollission()
-                    .instabreak()
-                    .lightLevel($ -> 1)
-                    .sound(SoundType.SOUL_SAND)
-            )
-            .addLayer(() -> RenderType::cutout)
-            .blockstate(Services.DATAGEN::existingModel)
-            .item()
-            .transform(BrazierContent.conditionalTab(CreativeModeTabs.FUNCTIONAL_BLOCKS, Services.CONFIGS.server()::enableSpawnPowder))
-            .recipe((context, provider) -> {
-                ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, context.get(), 6)
-                        .requires(Ingredient.of(BrazierTags.ASH), 4)
-                        .requires(Items.CHARCOAL)
-                        .requires(BrazierTags.WARPED_WART_TAG)
-                        .unlockedBy("has_living_flame", has(BrazierItems.LIVING_FLAME))
-                        .unlockedBy("has_ash", has(BrazierTags.ASH))
-                        .unlockedBy("has_warped_wart", has(BrazierTags.WARPED_WART_TAG))
-                        .save(provider);
-
-                ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, Blocks.WARPED_WART_BLOCK)
-                        .pattern("xxx")
-                        .pattern("xxx")
-                        .pattern("xxx")
-                        .define('x', BrazierTags.WARPED_WART_TAG)
-                        .unlockedBy("collected_wart", has(BrazierTags.WARPED_WART_TAG))
-                        .save(provider, BrazierConstants.createId("warped_warp_block"));
-            })
-            .build()
+    public static final BlockEntry<? extends HorizontalDirectionalBlock> CARVED_WHITE_PUMPKIN = REGISTRATE.object("carved_white_pumpkin")
+            .block(CarvedWhitePumpkinBlock::new)
+            .initialProperties(() -> Blocks.CARVED_PUMPKIN)
+            .properties(it -> it.mapColor(MapColor.TERRACOTTA_WHITE))
+            .blockstate(Datagen.consume(IDatagen::carvedPumpkin))
+            .simpleItem()
             .register();
 
     @Nullable

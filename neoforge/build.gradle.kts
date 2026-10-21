@@ -1,4 +1,5 @@
 plugins {
+    id("loader")
     id("com.possible-triangle.neoforge")
 }
 

@@ -32,7 +32,6 @@ public class SyncConfigMessage implements CustomPacketPayload {
         buf.writeInt(message.config.baseRange());
         buf.writeBoolean(message.config.protectAbove());
         buf.writeEnum(message.config.distanceCalculator());
-        buf.writeBoolean(message.config.enableSpawnPowder());
         buf.writeBoolean(message.config.enableDecoration());
     }
 
@@ -47,7 +46,6 @@ public class SyncConfigMessage implements CustomPacketPayload {
                         buf.readInt(),
                         buf.readBoolean(),
                         buf.readEnum(DistanceHandler.Type.class),
-                        buf.readBoolean(),
                         buf.readBoolean()
                 )
         );

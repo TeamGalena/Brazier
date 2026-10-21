@@ -2,7 +2,6 @@ package com.possible_triangle.brazier.logic;
 
 import com.google.common.collect.Maps;
 import com.possible_triangle.brazier.config.DistanceHandler;
-import com.possible_triangle.brazier.index.BrazierBlocks;
 import com.possible_triangle.brazier.index.BrazierTags;
 import com.possible_triangle.brazier.platform.Services;
 import java.util.HashMap;
@@ -74,15 +73,6 @@ public class BrazierLogic {
 
     public static boolean prevents(Entity entity, LevelAccessor world, MobSpawnType reason) {
         BlockPos pos = entity.blockPosition();
-
-        // Check for spawn powder
-        if (Services.CONFIGS.server().enableSpawnPowder()) {
-            var state = world.getBlockState(pos);
-            if (BrazierBlocks.SPAWN_POWDER.filter(state::is).isPresent()) {
-                return false;
-            }
-        }
-
         return prevents(reason) && prevents(entity) && BrazierLogic.inRange(pos, entity.level().dimension());
     }
 

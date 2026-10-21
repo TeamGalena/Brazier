@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/orientable",
+  "textures": {
+    "front": "brazier:block/carved_white_pumpkin",
+    "side": "brazier:block/white_pumpkin_side",
+    "top": "brazier:block/white_pumpkin_top"
+  }
+}

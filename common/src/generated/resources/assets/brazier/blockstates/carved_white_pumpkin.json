@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "brazier:block/carved_white_pumpkin",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "brazier:block/carved_white_pumpkin"
+    },
+    "facing=south": {
+      "model": "brazier:block/carved_white_pumpkin",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "brazier:block/carved_white_pumpkin",
+      "y": 270
+    }
+  }
+}

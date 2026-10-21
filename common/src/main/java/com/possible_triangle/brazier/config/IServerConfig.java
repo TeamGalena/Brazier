@@ -18,8 +18,6 @@ public interface IServerConfig  {
 
    DistanceHandler.Type distanceCalculator();
 
-   boolean enableSpawnPowder();
-
    boolean enableDecoration();
 
 

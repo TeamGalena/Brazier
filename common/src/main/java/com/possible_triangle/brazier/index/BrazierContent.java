@@ -1,17 +1,15 @@
 package com.possible_triangle.brazier.index;
 
 
-import com.possible_triangle.brazier.data.ConfigLootCondition;
-import com.possible_triangle.brazier.data.ModLootCondition;
 import com.possible_triangle.brazier.logic.ConstructBrazierTrigger;
 import com.possible_triangle.brazier.platform.Services;
+import com.possible_triangle.brazier.world.conditions.ConfigLootCondition;
+import com.possible_triangle.brazier.world.conditions.ModLootCondition;
 import com.possible_triangle.multikulti.registrate.MultikultiRegistrate;
 import com.tterrag.registrate.builders.ItemBuilder;
 import com.tterrag.registrate.util.entry.RegistryEntry;
 import com.tterrag.registrate.util.nullness.NonNullFunction;
-
 import java.util.function.BooleanSupplier;
-
 import net.minecraft.advancements.CriterionTrigger;
 import net.minecraft.client.particle.FlameParticle;
 import net.minecraft.core.particles.ParticleType;

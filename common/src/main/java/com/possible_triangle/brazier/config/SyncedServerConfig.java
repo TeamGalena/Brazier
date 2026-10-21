@@ -9,7 +9,6 @@ public record SyncedServerConfig(
         int baseRange,
         boolean protectAbove,
         DistanceHandler.Type distanceCalculator,
-        boolean enableSpawnPowder,
         boolean enableDecoration
 
 ) implements IServerConfig {
