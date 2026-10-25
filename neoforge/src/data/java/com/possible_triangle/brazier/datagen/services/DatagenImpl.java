@@ -16,7 +16,7 @@ import net.neoforged.neoforge.client.model.generators.ConfiguredModel;
 public class DatagenImpl implements IDatagen {
 
     @Override
-    public void brazierBlockState(DataGenContext<Block, ? extends Block> context, RegistrateBlockstateProvider provider) {
+    public void brazier(DataGenContext<Block, ? extends Block> context, RegistrateBlockstateProvider provider) {
         provider.getVariantBuilder(context.get()).forAllStatesExcept(state -> {
             var lit = state.getValue(BlockStateProperties.LIT);
             var suffix = lit ? "_lit" : "";

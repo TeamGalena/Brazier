@@ -27,15 +27,16 @@ dependencies {
     modImplementation(libs.flywheel)
     modImplementation(libs.ponder)
 
-    "dataImplementation"(libs.create) { isTransitive = false }
+    modImplementation(libs.create) { isTransitive = false }
 
-    if (!env.isCI) {
-        modRuntimeOnly(libs.jei.neoforge)
+    modRuntimeOnly(libs.jei.neoforge)
 
-        modRuntimeOnly(pack.neoforge.modrinth.supplementaries)
-        modRuntimeOnly(pack.neoforge.modrinth.moonlight)
-        modRuntimeOnly(pack.neoforge.curseforge.configured)
-    }
+    "dataCompileOnly"(pack.neoforge.modrinth.supplementaries)
+    modRuntimeOnly(pack.neoforge.modrinth.supplementaries)
+    modRuntimeOnly(pack.neoforge.modrinth.moonlight)
+    modRuntimeOnly(pack.neoforge.curseforge.configured)
+
+    modRuntimeOnly(pack.neoforge.modrinth.freecam)
 }
 
 upload {

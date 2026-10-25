@@ -4,12 +4,16 @@ import static net.minecraft.resources.ResourceLocation.fromNamespaceAndPath;
 
 import com.possible_triangle.brazier.BrazierConstants;
 import com.possible_triangle.brazier.compat.ponder.BrazierPonders;
+import com.possible_triangle.brazier.datagen.providers.MobHeadEffectsRegistrateProvider;
+import com.possible_triangle.brazier.index.BrazierBlocks;
 import com.possible_triangle.brazier.index.BrazierTags;
 import com.possible_triangle.brazier.platform.Services;
 import com.tterrag.registrate.providers.ProviderType;
 import com.tterrag.registrate.providers.RegistrateItemTagsProvider;
 import com.tterrag.registrate.providers.RegistrateTagsProvider;
+import java.util.List;
 import net.createmod.ponder.foundation.PonderIndex;
+import net.mehvahdjukaar.supplementaries.client.MobHeadShadersManager.MobHeadEffect;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
@@ -41,6 +45,8 @@ public class BrazierData {
         registrate.addDataGenerator(ProviderType.ITEM_TAGS, BrazierData::itemTags);
         registrate.addDataGenerator(ProviderType.BLOCK_TAGS, BrazierData::blockTags);
         registrate.addDataGenerator(ProviderType.ENTITY_TAGS, BrazierData::entityTags);
+
+        registrate.addDataGenerator(MobHeadEffectsRegistrateProvider.TYPE, BrazierData::mobHeadEffects);
     }
 
     private static void itemTags(RegistrateItemTagsProvider provider) {
@@ -83,6 +89,14 @@ public class BrazierData {
                 .add(EntityType.ENDER_DRAGON)
                 .add(EntityType.ELDER_GUARDIAN)
                 .add(EntityType.WARDEN);
+    }
+
+    private static void mobHeadEffects(MobHeadEffectsRegistrateProvider provider) {
+        provider.add(BrazierConstants.createId("cursed_skull"), new MobHeadEffect(
+                List.of(BrazierBlocks.CURSED_SKULL.asItem()),
+                List.of(),
+                fromNamespaceAndPath("supplementaries", "flare")
+        ));
     }
 
 }

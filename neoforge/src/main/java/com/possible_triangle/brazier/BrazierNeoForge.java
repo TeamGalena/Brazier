@@ -25,11 +25,10 @@ public class BrazierNeoForge {
 
     public BrazierNeoForge(IEventBus modBus) {
         modBus.register(this);
+        REGISTRATE.registerEventListeners(modBus);
 
         Services.CONFIGS.register();
         BrazierContent.init();
-
-        REGISTRATE.registerEventListeners(modBus);
     }
 
     @SubscribeEvent
