@@ -1,11 +1,14 @@
 package com.possible_triangle.brazier.datagen.services;
 
 import static com.possible_triangle.brazier.BrazierConstants.createId;
+import static net.minecraft.resources.ResourceLocation.withDefaultNamespace;
 
 import com.possible_triangle.brazier.platform.services.IDatagen;
 import com.tterrag.registrate.providers.DataGenContext;
 import com.tterrag.registrate.providers.RegistrateBlockstateProvider;
-import net.minecraft.resources.ResourceLocation;
+import com.tterrag.registrate.providers.RegistrateItemModelProvider;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.neoforged.neoforge.client.model.generators.ConfiguredModel;
@@ -40,7 +43,12 @@ public class DatagenImpl implements IDatagen {
 
     @Override
     public void cursedSkull(DataGenContext<Block, ? extends Block> context, RegistrateBlockstateProvider provider) {
-        provider.simpleBlock(context.get(), provider.models().getExistingFile(ResourceLocation.withDefaultNamespace("block/skull")));
+        provider.simpleBlock(context.get(), provider.models().getExistingFile(withDefaultNamespace("block/skull")));
+    }
+
+    @Override
+    public void cursedSkull(DataGenContext<Item, BlockItem> context, RegistrateItemModelProvider provider) {
+        provider.withExistingParent(context.getName(), withDefaultNamespace("item/template_skull"));
     }
 
 }

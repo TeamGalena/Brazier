@@ -2,8 +2,10 @@ package com.possible_triangle.brazier.logic;
 
 import com.possible_triangle.brazier.index.BrazierComponents;
 import com.possible_triangle.brazier.index.BrazierTags;
+
 import java.util.List;
 import java.util.stream.Stream;
+
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
@@ -25,7 +27,12 @@ public class SoulCapturing {
     }
 
     private static void capture(ItemStack stack, LivingEntity killer, LivingEntity deceased) {
-        stack.set(BrazierComponents.CAPTURED_SOUL.value(), new CapturedSoul(deceased.getType().builtInRegistryHolder()));
+        var soul = new CapturedSoul(deceased.getType().builtInRegistryHolder());
+        capture(stack, killer, soul);
+    }
+
+    public static void capture(ItemStack stack, LivingEntity killer, CapturedSoul soul) {
+        stack.set(BrazierComponents.CAPTURED_SOUL.value(), soul);
 
         killer.playSound(SoundEvents.LODESTONE_COMPASS_LOCK, 1F, 0.2F);
     }

@@ -89,6 +89,7 @@ public class BrazierBlocks {
             .tag(BrazierTags.RANGE_INDICATOR)
             .tag(ItemTags.SKULLS)
             .properties(it -> it.stacksTo(1))
+            .model(Datagen.consume(IDatagen::cursedSkull))
             .build()
             .<CursedSkullBlockEntity>blockEntity(($, p, s) -> new CursedSkullBlockEntity(p, s))
             .renderer(() -> CursedSkullRenderer::new)

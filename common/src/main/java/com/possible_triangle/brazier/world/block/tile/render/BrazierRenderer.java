@@ -12,6 +12,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
@@ -98,8 +99,18 @@ public class BrazierRenderer implements BlockEntityRenderer<BrazierBlockEntity> 
     }
 
     @Override
-    public boolean shouldRenderOffScreen(BrazierBlockEntity tile) {
-        return Services.CONFIGS.client().renderRunes();
+    public boolean shouldRenderOffScreen(BrazierBlockEntity instance) {
+        return instance.getHeight() > 0 && Services.CONFIGS.client().renderRunes();
+    }
+
+    /**
+     * this is a neoforge-only method define in `IBlockEntityRendererExtension`
+     */
+    @SuppressWarnings("unused")
+    public AABB getRenderBoundingBox(BrazierBlockEntity instance) {
+        return new AABB(instance.getBlockPos())
+                .inflate(2, 0, 2)
+                .expandTowards(0, -instance.getHeight(), 0);
     }
 
 }
