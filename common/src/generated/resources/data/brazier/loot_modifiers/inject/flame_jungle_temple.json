@@ -1,0 +1,10 @@
+{
+  "type": "brazier:inject",
+  "conditions": [
+    {
+      "condition": "neoforge:loot_table_id",
+      "loot_table_id": "minecraft:chests/jungle_temple"
+    }
+  ],
+  "loot_table": "brazier:inject/flame_jungle_temple"
+}

@@ -7,14 +7,17 @@ import com.possible_triangle.brazier.platform.Datagen;
 import com.possible_triangle.brazier.platform.services.IDatagen;
 import com.possible_triangle.brazier.world.block.*;
 import com.possible_triangle.brazier.world.block.tile.BrazierBlockEntity;
+import com.possible_triangle.brazier.world.block.tile.CursedSkullBlockEntity;
 import com.possible_triangle.brazier.world.block.tile.render.BrazierRenderer;
-import com.tterrag.registrate.util.entry.BlockEntityEntry;
+import com.possible_triangle.brazier.world.block.tile.render.CursedSkullRenderer;
 import com.tterrag.registrate.util.entry.BlockEntry;
+import com.tterrag.registrate.util.entry.RegistryEntry;
 import java.util.function.Supplier;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -34,7 +37,6 @@ public class BrazierBlocks {
                     .noOcclusion()
                     .lightLevel(s -> s.getValue(BlockStateProperties.LIT) ? 15 : 0)
             )
-            .addLayer(() -> RenderType::cutout)
             .blockstate(Datagen.consume(IDatagen::brazierBlockState))
             .tag(BlockTags.MINEABLE_WITH_PICKAXE)
             .item()
@@ -45,25 +47,26 @@ public class BrazierBlocks {
                             .pattern("SSS")
                             .define('B', Blocks.IRON_BARS)
                             .define('S', Blocks.BLACKSTONE)
-                            .define('F', BrazierItems.LIVING_FLAME.get())
+                            .define('F', BrazierItems.LIVING_FLAME.value())
                             .unlockedBy("has_living_flame", has(BrazierItems.LIVING_FLAME))
                             .save(provider)
             )
             .build()
+            .blockEntity(BrazierBlockEntity::new)
+            .renderer(() -> $ -> new BrazierRenderer())
+            .build()
             .register();
 
-    public static final BlockEntityEntry<BrazierBlockEntity> BRAZIER_ENTITY = REGISTRATE.object("brazier")
-            .blockEntity(BrazierBlockEntity::new)
-            .validBlock(BRAZIER)
-            .renderer(() -> $ -> new BrazierRenderer())
-            .register();
+    public static final RegistryEntry<BlockEntityType<?>, BlockEntityType<BrazierBlockEntity>> BRAZIER_ENTITY = BRAZIER.getSibling(Registries.BLOCK_ENTITY_TYPE);
 
     public static final BlockEntry<? extends Block> WHITE_PUMPKIN = REGISTRATE.object("white_pumpkin")
             .block(Block::new)
             .initialProperties(() -> Blocks.PUMPKIN)
             .properties(it -> it.mapColor(MapColor.TERRACOTTA_WHITE))
             .blockstate(Datagen.consume(IDatagen::pumpkin))
-            .simpleItem()
+            .item()
+            .tab(CreativeModeTabs.NATURAL_BLOCKS)
+            .build()
             .register();
 
     public static final BlockEntry<? extends HorizontalDirectionalBlock> CARVED_WHITE_PUMPKIN = REGISTRATE.object("carved_white_pumpkin")
@@ -71,8 +74,28 @@ public class BrazierBlocks {
             .initialProperties(() -> Blocks.CARVED_PUMPKIN)
             .properties(it -> it.mapColor(MapColor.TERRACOTTA_WHITE))
             .blockstate(Datagen.consume(IDatagen::carvedPumpkin))
-            .simpleItem()
+            .item()
+            .tab(CreativeModeTabs.NATURAL_BLOCKS)
+            .build()
             .register();
+
+    public static final BlockEntry<? extends CursedSkullBlock> CURSED_SKULL = REGISTRATE.object("cursed_skull")
+            .block(CursedSkullBlock::new)
+            .initialProperties(() -> Blocks.WITHER_SKELETON_SKULL)
+            .blockstate(Datagen.consume(IDatagen::cursedSkull))
+            .item()
+            .tab(CreativeModeTabs.FUNCTIONAL_BLOCKS)
+            .tag(BrazierTags.CAPTURES_SOULS)
+            .tag(BrazierTags.RANGE_INDICATOR)
+            .tag(ItemTags.SKULLS)
+            .properties(it -> it.stacksTo(1))
+            .build()
+            .<CursedSkullBlockEntity>blockEntity(($, p, s) -> new CursedSkullBlockEntity(p, s))
+            .renderer(() -> CursedSkullRenderer::new)
+            .build()
+            .register();
+
+    public static final RegistryEntry<BlockEntityType<?>, BlockEntityType<BrazierBlockEntity>> CURSED_SKULL_ENTITY = CURSED_SKULL.getSibling(Registries.BLOCK_ENTITY_TYPE);
 
     @Nullable
     @SuppressWarnings("unchecked")

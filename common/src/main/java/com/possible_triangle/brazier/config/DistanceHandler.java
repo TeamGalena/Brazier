@@ -20,12 +20,12 @@ public class DistanceHandler {
 
     }
 
-    public static double getDistance(Vec3 from, BlockPos to) {
+    public static double getDistanceSqr(Vec3 from, BlockPos to) {
         return Services.CONFIGS.server().distanceCalculator().calc.apply(from, to);
     }
 
-    public static double getDistance(BlockPos from, BlockPos to) {
-        return getDistance(new Vec3(from.getX(), from.getY(), from.getZ()), to);
+    public static double getDistanceSqr(BlockPos from, BlockPos to) {
+        return getDistanceSqr(new Vec3(from.getX(), from.getY(), from.getZ()), to);
     }
 
 }

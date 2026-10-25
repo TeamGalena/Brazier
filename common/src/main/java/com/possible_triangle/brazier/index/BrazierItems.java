@@ -23,7 +23,7 @@ public class BrazierItems {
     public static final ItemEntry<Item> ASH = REGISTRATE.object("ash")
             .item(Item::new)
             .tag(BrazierTags.ASH)
-            .transform(conditionalTab(CreativeModeTabs.INGREDIENTS, () -> !Services.PLATFORM.isModLoaded("nether_extension") && !Services.PLATFORM.isModLoaded("supplementaries")))
+            .transform(conditionalTab(CreativeModeTabs.INGREDIENTS, () -> !Services.PLATFORM.isModLoaded("supplementaries")))
             .register();
 
     public static final ItemEntry<Item> WARPED_NETHER_WART = REGISTRATE.object("warped_nether_wart")

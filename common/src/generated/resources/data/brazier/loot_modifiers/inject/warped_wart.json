@@ -1,0 +1,10 @@
+{
+  "type": "brazier:inject",
+  "conditions": [
+    {
+      "condition": "neoforge:loot_table_id",
+      "loot_table_id": "minecraft:blocks/nether_wart"
+    }
+  ],
+  "loot_table": "brazier:inject/warped_wart"
+}

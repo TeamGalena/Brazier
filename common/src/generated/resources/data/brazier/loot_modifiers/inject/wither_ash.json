@@ -1,0 +1,19 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:not",
+      "value": {
+        "type": "neoforge:mod_loaded",
+        "modid": "supplementaries"
+      }
+    }
+  ],
+  "type": "brazier:inject",
+  "conditions": [
+    {
+      "condition": "neoforge:loot_table_id",
+      "loot_table_id": "minecraft:entities/wither_skeleton"
+    }
+  ],
+  "loot_table": "brazier:inject/wither_ash"
+}

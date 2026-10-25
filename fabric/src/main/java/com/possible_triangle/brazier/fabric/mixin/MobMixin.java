@@ -14,8 +14,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class MobMixin {
 
     @Inject(at = @At("HEAD"), cancellable = true, method = "checkSpawnRules(Lnet/minecraft/world/level/LevelAccessor;Lnet/minecraft/world/entity/MobSpawnType;)Z")
-    public void checkSpawnRules(LevelAccessor world, MobSpawnType reason, CallbackInfoReturnable<Boolean> callback) {
-        if(BrazierLogic.prevents((Entity) (Object) this, world, reason)) callback.setReturnValue(false);
+    public void checkSpawnRules(LevelAccessor level, MobSpawnType reason, CallbackInfoReturnable<Boolean> callback) {
+        if(BrazierLogic.prevents((Entity) (Object) this, level, reason)) callback.setReturnValue(false);
     }
 
 }

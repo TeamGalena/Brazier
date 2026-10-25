@@ -11,4 +11,6 @@ public interface IDatagen {
     void pumpkin(DataGenContext<Block, ? extends Block> context, RegistrateBlockstateProvider provider);
 
     void carvedPumpkin(DataGenContext<Block, ? extends Block> context, RegistrateBlockstateProvider provider);
+
+    void cursedSkull(DataGenContext<Block, ? extends Block> context, RegistrateBlockstateProvider provider);
 }

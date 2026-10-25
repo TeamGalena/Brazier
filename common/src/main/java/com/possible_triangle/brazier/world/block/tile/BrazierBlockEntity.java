@@ -3,6 +3,7 @@ package com.possible_triangle.brazier.world.block.tile;
 import com.possible_triangle.brazier.index.BrazierContent;
 import com.possible_triangle.brazier.index.BrazierTags;
 import com.possible_triangle.brazier.logic.BrazierLogic;
+import com.possible_triangle.brazier.logic.PreventionRules;
 import com.possible_triangle.brazier.platform.Services;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
@@ -32,8 +33,7 @@ public class BrazierBlockEntity extends BlockEntity {
         if (this.height != height) {
             this.height = height;
             setChanged();
-            if (this.getBlockPos() != null && this.level != null)
-                BrazierLogic.addBrazier(getBlockPos(), level.dimension(), getRange());
+            updateRules();
         }
     }
 
@@ -44,7 +44,7 @@ public class BrazierBlockEntity extends BlockEntity {
         if (tile.ticksExisted % 40 == 0) tile.checkStructure(pos, state);
 
         if (tile.height > 0 && level instanceof ServerLevel serverLevel && tile.ticksExisted % 10 == 0) {
-            serverLevel.sendParticles(BrazierContent.FLAME_PARTICLE.get(), pos.getX() + 0.5, pos.getY() + 2.0, pos.getZ() + 0.5, 1, 0.4, 0.8, 0.4, 0);
+            serverLevel.sendParticles(BrazierContent.FLAME_PARTICLE.value(), pos.getX() + 0.5, pos.getY() + 2.0, pos.getZ() + 0.5, 1, 0.4, 0.8, 0.4, 0);
         }
     }
 
@@ -100,19 +100,25 @@ public class BrazierBlockEntity extends BlockEntity {
         nbt.putInt("height", height);
     }
 
-    public int getRange() {
-        if (height <= 0) return 0;
+    public PreventionRules getRules() {
+        if (height <= 0) return PreventionRules.NONE;
         var config = Services.CONFIGS.server();
-        return config.baseRange() + config.rangePerLevel() * (height - 1);
+        var distance = config.baseRange() + config.rangePerLevel() * (height - 1);
+        return new PreventionRules(distance);
     }
 
     public int getHeight() {
         return height;
     }
 
-
     public void onLoad() {
-        if (this.height > 0) BrazierLogic.addBrazier(getBlockPos(), level.dimension(), getRange());
+        updateRules();
+    }
+
+    private void updateRules() {
+        if (this.level == null) return;
+        if (this.height > 0) BrazierLogic.addBrazier(getBlockPos(), level.dimension(), getRules());
+        else BrazierLogic.removeBrazier(getBlockPos(), level.dimension());
     }
 
     @Override

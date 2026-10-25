@@ -14,7 +14,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -31,9 +30,7 @@ public class BrazierData {
         event.createProvider(PackMetadata::new);
         event.createProvider((o, r) -> new Sprites(o, r, helper));
 
-        registrate.addDataGenerator(ProviderType.LOOT, provider -> {
-            provider.addLootAction(LootContextParamSets.EMPTY, consumer -> LootInjects.generate(consumer, provider.getProvider()));
-        });
+        LootInjects.generate();
 
         BrazierPonders.register();
         PonderIndex.getLangAccess().provideLang(BrazierConstants.MOD_ID, registrate::addRawLang);
@@ -69,12 +66,19 @@ public class BrazierData {
     }
 
     private static void entityTags(RegistrateTagsProvider.IntrinsicImpl<EntityType<?>> provider) {
-        provider.addTag(BrazierTags.BRAZIER_BLACKLIST)
+        provider.addTag(BrazierTags.PREVENTABLE.whitelist())
                 .add(EntityType.SLIME)
                 .add(EntityType.MAGMA_CUBE)
                 .add(EntityType.HOGLIN);
 
-        provider.addTag(BrazierTags.BRAZIER_WHITELIST)
+        provider.addTag(BrazierTags.PREVENTABLE.blacklist())
+                .add(EntityType.WITHER)
+                .add(EntityType.ENDER_DRAGON)
+                .add(EntityType.ELDER_GUARDIAN)
+                .add(EntityType.WARDEN);
+
+        provider.addTag(BrazierTags.SOUL_CAPTURE.whitelist());
+        provider.addTag(BrazierTags.SOUL_CAPTURE.blacklist())
                 .add(EntityType.WITHER)
                 .add(EntityType.ENDER_DRAGON)
                 .add(EntityType.ELDER_GUARDIAN)

@@ -30,6 +30,7 @@ public class BrazierContent {
         BrazierItems.init();
         BrazierBlocks.init();
         BrazierEntities.init();
+        BrazierComponents.init();
     }
 
     public static final RegistryEntry<ParticleType<?>, SimpleParticleType> FLAME_PARTICLE = REGISTRATE.object("flame")

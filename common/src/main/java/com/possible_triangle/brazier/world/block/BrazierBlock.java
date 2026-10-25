@@ -52,7 +52,7 @@ public class BrazierBlock extends BaseEntityBlock {
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new BrazierBlockEntity(BrazierBlocks.BRAZIER_ENTITY.get(), pos, state);
+        return new BrazierBlockEntity(BrazierBlocks.BRAZIER_ENTITY.value(), pos, state);
     }
 
     @Nullable
